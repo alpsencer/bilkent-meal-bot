@@ -5,7 +5,7 @@
 ## V4 (COMING SOON)
 User Interface:
   
-  ✅ NEW: Seeing week's menu in one image
+  ✅ NEW: To see the menu of the week in one image
   
   ✅ NEW: "I am in the dining hall" announcement to EVERYONE using the bot
   
