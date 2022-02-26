@@ -2,6 +2,13 @@
 
 <img src="https://user-images.githubusercontent.com/28690608/155695482-e3573cba-4bac-4c5f-99a7-259f3956485d.jpg" alt="drawing" width="200" />
 
+## V4 (COMING SOON)
+User Interface:
+  
+  ✅ NEW: Seeing week's menu in one image
+  
+  ✅ NEW: "I am in the dining hall" announcement to EVERYONE using the bot
+  
 ## V3
 User Interface:
   
