@@ -2,7 +2,7 @@
 
 <img src="https://user-images.githubusercontent.com/28690608/155695482-e3573cba-4bac-4c5f-99a7-259f3956485d.jpg" alt="drawing" width="200" />
 
-## V4 (COMING SOON)
+## V4
 User Interface:
   
   ✅ NEW: To see the menu of the week in one image
