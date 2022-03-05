@@ -6,27 +6,21 @@ import time
 import threading
 import telebot
 from telebot import types
-
+#BYEMEKBOT
 # Modulleri ayri klasorlerde tutabilmek icin asagidakiler yapildi. !!! DIKKAT Surum Degisirken Path degisecek !!!
 sys.path.append('/home/runner/BilkentYemekBot/PdfDownloader')
 sys.path.append('/home/runner/BilkentYemekBot/MenuToImage')
 sys.path.append('/home/runner/BilkentYemekBot/ImageCropper')
 sys.path.append('/home/runner/BilkentYemekBot/KeepAlive')
 
-
 # Kendi modullerimi yukleyen komutlar
 from pdfdownloader import pdfdownloader
-
-
 from menutoimage import menutoimage
 from imagecropper import imagecropper
-
 from keep_alive import keep_alive 
 
 API_KEY = os.environ['API_KEY']
 bot = telebot.TeleBot(API_KEY)
-
-        
 
 @bot.message_handler(commands=['start'])   
 def yemek(message):
@@ -71,7 +65,6 @@ def yemekPhoto(message):
     bot.send_photo(message.chat.id,photo)
     gunler = ["","Pazartesi","Salı","Çarşamba","Perşembe","Cuma","Cumartesi","Pazar"]
     bot.send_message(message.chat.id,"{day} günü yemekleri".format(day = gunler[weekday]))  
-
 
     # Sticker sender
     # time.sleep(4)
@@ -121,7 +114,6 @@ def process_voting_step(message):
         oyMetni = random.randint(0,4)
         bot.send_message(message.chat.id,oylar[oyMetni])
         
-
 def process_saving_step(message):
     try:
         chat_id = message.chat.id
@@ -159,7 +151,6 @@ def process_saving_step(message):
     except Exception as e:
         bot.reply_to(message, 'Bir hata olustu')
 
-
 @bot.message_handler(commands=['yemek2'])
 def yemekYarinPhoto(message):
     chat_id = message.chat.id
@@ -172,37 +163,21 @@ def yemekYarinPhoto(message):
         bot.send_photo(chat_id,photo)
         gunler = ["","Pazartesi","Salı","Çarşamba","Perşembe","Cuma","Cumartesi","Pazar"]
         bot.send_message(chat_id,"Yarının yani {day} gününün yemekleri".format(day = gunler[weekday]))
-
-        # Oy verme oncesi
-        date = datetime.now()
-        currentDate = date.today()
-        currentWeek = int(currentDate.isocalendar()[1])
-        weekday = date.weekday()
-        weekday += 1
-        idTxt = open('Database/votedIDsWeek{week}Day{day}.txt'.format(week = currentWeek, day = weekday), 'r+')
-        ides = idTxt.readline()
-        idler = ides.split(',')
-        
-        if not ( str(chat_id) in idler):
-            markup = types.ReplyKeyboardMarkup(one_time_keyboard=True)
-            markup.add('1', '2','3','4','5')
-            msg = bot.send_message(chat_id, "Bugünkü yemeği ne kadar seviyorsun?", reply_markup=markup)
-            bot.register_next_step_handler(msg, process_saving_step)
-        # else:
-            # bot.send_message(chat_id,"Bugünkü yemeğe zaten oy verdin. Bir yemeğe en fazla 1 defa oy verebilirsin :)") 
     else:
         bot.send_message(message.chat.id,"Yarının yemekleri henüz yayınlanmadı dostum. Biraz sonra tekrar deneyebilirsin.")
 
-
+@bot.message_handler(commands=['tumyemekler'])
+def yemekYarinPhoto(message):
+    chat_id = message.chat.id
+    photo = open('MenuToImage/HaftaninMenuResmi/guncelliste.png', 'rb')
+    bot.send_photo(chat_id,photo)
+    bot.send_message(chat_id,"Haftanın tüm yemekleri")
 
 bot.enable_save_next_step_handlers(delay=2)
 
 # Load next_step_handlers from save file (default "./.handlers-saves/step.save")
 # WARNING It will work only if enable_save_next_step_handlers was called!
 bot.load_next_step_handlers()
-
-
-
 
 # Daily notifications
 def hourChecker():
@@ -216,7 +191,7 @@ def hourChecker():
 
         if dayOfTheYear > lastCheckedDay:
             an = datetime.now()
-            if (an.hour == 9):              
+            if (an.hour == 8):              
                 wk = open('Database/sonGun.txt', 'r+')
                 wk.truncate(0)
                 wk.write('{text}'.format( text = dayOfTheYear))
@@ -246,39 +221,53 @@ def notification_sender(id):
         print("BASARISIZ")
         pass
 
-# def notification_sender(id):
-#     try:
-#         date = datetime.now()
-#         weekday = date.weekday()
-#         weekday += 1
-#         gunler = ["","Pazartesi","Salı","Çarşamba","Perşembe","Cuma","Cumartesi","Pazar"]
-#         photo = open('ImageCropper/DailyMenus/eriste.png'.format(day = weekday), 'rb')
-#         bot.send_photo(id,photo)
-#         bot.send_message(id,"Kaşarlı Cevizli Erişte gününüz afiyet olsun. Kaşarınız yağlı, ceviziniz bol olsun.")
-#         print(id + "ye gonderim BASARILI")
-#     except:
-#         print(id + "ye gonderim BASARISIZ")
-#         pass
 
-# 
-# bot.send_message(id, "Yemek Hatırlatması")
-# date = datetime.now()
-# weekday = date.weekday()
-# weekday += 1
-# photo = open('ImageCropper/DailyMenus/day{day}.png'.format(day = weekday), 'rb')
-# bot.send_photo(id,photo)
-# bot.send_message(id,"{day} gününün yemekleri".format(day = gunler[weekday]))
+@bot.message_handler(commands=['yemekhanedeyim'])   
+def yemekhanedeyim(message):
+    from datetime import date
+    currentDate = date.today()
+    currentWeek = int(currentDate.isocalendar()[1])
+    date = datetime.now()
+    weekday = date.weekday()
+
+
+    idTxt = open('Database/jumpersIDsWeek{week}Day{day}.txt'.format(week = currentWeek, day = weekday), 'a+')
+    idTxt.close()
+    idTxt = open('Database/jumpersIDsWeek{week}Day{day}.txt'.format(week = currentWeek, day = weekday), 'r+')
+    ides = idTxt.readline()
+    idler = ides.split(',')
+
+    if not ( str(message.chat.id) in idler):
+        no = open("Database/jumpersIDsWeek{week}Day{day}.txt".format(week = currentWeek, day = weekday), "a")
+        no.write(",{n}".format( n = message.chat.id))
+        no.close() 
+        i_am_here_runner(message)
+    else:
+        bot.send_message(message.chat.id, "{isim} dostum bugün zaten bir defa yemekhaneye ışınlandın. Yemekhaneye olan sevgini çok iyi anlıyorum fakat bugünlük bu kadar yeter bence. Yarın tabi ki tekrar deneyebilirsin.".format(isim = message.chat.first_name))  
+        print("YENIDEN ISINLANMA DENEMESI YAPILDI")
     
 
+def i_am_here_runner(message):
+    txt = open('Database/idStore.txt', 'r+')
+    contents = txt.readline()
+    idler = contents.split(',')
+    idler = list(dict.fromkeys(idler))
+    txt.close()
+    for id in idler:
+        i_am_here(message,id)
+
+def i_am_here(message,id):
+    try:
+        bot.send_message(id, "{isim} yemekhaneye ışınlandı.".format(isim = message.chat.first_name))  
+        print("BASARILI: Yemekhanedeyim")
+    except:
+        print("BASARISIZ: Yemekhanedeyim")
+        pass
 
 if __name__ == "__main__":
     threading.Thread(target=hourChecker).start()
     keep_alive() ##
 
 bot.infinity_polling()
-
-
-# token = os.environ['API_KEY'] ##
-# bot.run(token) ##
 
 # https://www.codementor.io/@garethdwyer/building-a-discord-bot-with-python-and-repl-it-miblcwejz#keeping-our-bot-alive
