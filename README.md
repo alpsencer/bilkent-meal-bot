@@ -4,6 +4,15 @@
 
 Uptime Status: https://bit.ly/bilkentyemekbotu
 
+## V5
+User Interface:
+  
+  ✅ NEW: Ramadan Update: Iftar time
+  
+  ✅ NEW: Daily weather forecast messages
+
+  ✅ NEW: Weather forecast messages for today and tomorrow
+
 ## V4
 User Interface:
   
