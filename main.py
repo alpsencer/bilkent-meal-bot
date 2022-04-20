@@ -191,7 +191,7 @@ def hourChecker():
 
         if dayOfTheYear > lastCheckedDay:
             an = datetime.now()
-            if (an.hour == 8):              
+            if (an.hour == 11):      #the file may not be uploaded at 8 a.m.
                 wk = open('Database/sonGun.txt', 'r+')
                 wk.truncate(0)
                 wk.write('{text}'.format( text = dayOfTheYear))
